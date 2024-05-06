@@ -1,0 +1,1 @@
+take input from user and find out its factorial
