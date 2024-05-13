@@ -1,3 +1,6 @@
+POSTGRES on SUPABASE IS USED
+
+
 TO RUN THE SERVER  => npm run dev
 
 database is hosted on the supabase platform
