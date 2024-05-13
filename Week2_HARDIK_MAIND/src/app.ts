@@ -4,9 +4,7 @@ import dotenv from "dotenv";
 import pool from "./pgConfig";
 import {
   Student,
-  OrdersPayload,
   Order,
-  OrderBlock,
   NumberArray,
 } from "./types";
 
@@ -52,121 +50,6 @@ pool.connect((err, client, done) => {
   });
 });
 
-// POST API endpoint to filter orders and store orderIDs
-// app.post("/processOrders", async (req: Request, res: Response) => {
-//   try {
-//     const { items } = req.body;
-
-//     if (!items || !Array.isArray(items)) {
-//       return res
-//         .status(400)
-//         .json({ error: "Invalid payload format, please provide items list" });
-//     }
-
-//     const filteredOrders = items.filter((item: any) => {
-//       return !item.OrderBlocks.some((block: any) => {
-//         return (
-//           Array.isArray(block.lineNo) &&
-//           block.lineNo.some((line: number) => line % 3 === 0)
-//         );
-//       });
-//     });
-
-//     const orderIDs = filteredOrders.map((order: any) => order.orderID);
-//     const duplicateOrderIDs: string[] = [];
-
-//     // Store orderIDs in PostgreSQL database
-//     for (const orderID of orderIDs) {
-//       // Check if orderID already exists in the table
-//       const result = await pool.query(
-//         "SELECT orderID FROM orders WHERE orderID = $1",
-//         [orderID]
-//       );
-//       if (result.rows.length === 0) {
-//         await pool.query("INSERT INTO orders (orderID) VALUES ($1)", [orderID]);
-//       } else {
-//         duplicateOrderIDs.push(orderID);
-//       }
-//     }
-
-//     if (duplicateOrderIDs.length > 0) {
-//       // return res.status(400).json({ error: "Order Id Already Exists in the table", duplicateOrderIDs });
-//       return res
-//         .status(400)
-//         .json({
-//           error:
-//             "OrdersId whose orderBlocks line no is not divisible by 3 are processed and stored successfully,Order Id which already exists in the table are",
-//           duplicateOrderIDs,
-//         });
-//     }
-
-//     res
-//       .status(200)
-//       .json({ message: "Orders whose orderBlocks line no is not divisible by 3 are processed and stored successfully" });
-//   } catch (error) {
-//     console.error("Error processing orders:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
-
-// app.post("/processOrders", async (req: Request, res: Response) => {
-//   try {
-//     const { items } = req.body;
-
-//     if (!items || !Array.isArray(items)) {
-//       return res
-//         .status(400)
-//         .json({ error: "Invalid payload format, please provide items list" });
-//     }
-
-//     const filteredOrders = items.filter((item: any) => {
-//         return item.OrderBlocks.every((block: any) => {
-//             return !(
-//                 Array.isArray(block.lineNo) &&
-//                 block.lineNo.some((line: number) => line % 3 === 0)
-//             );
-//         });
-//     });;
-
-//     const orderIDs = filteredOrders.map((order: any) => order.orderID);
-//     const duplicateOrderIDs: string[] = [];
-
-//     // Store orderIDs in PostgreSQL database
-//     for (const item of items) {
-//         const orderID = item.orderID;
-//       // Check if orderID already exists in the table
-//       const result = await pool.query(
-//         "SELECT orderID FROM orders WHERE orderID = $1",
-//         [orderID]
-//       );
-//       if (result.rows.length === 0) {
-//         await pool.query("INSERT INTO orders (orderID) VALUES ($1)", [orderID]);
-//       } else {
-//         duplicateOrderIDs.push(orderID);
-//       }
-//     }
-
-//     if (duplicateOrderIDs.length > 0) {
-//       // return res.status(400).json({ error: "Order Id Already Exists in the table", duplicateOrderIDs });
-//       return res
-//         .status(400)
-//         .json({
-//           error:
-//             "OrdersId  are processed and stored successfully,Order Id which already exists in the table are",
-//           duplicateOrderIDs,
-//         });
-//     }
-
-//     res
-//       .status(200)
-//       .json({ message: "Orders are processed and stored successfully",
-//       "FilterOut the Orders whose any OrderBlock’s LineNo is divisible by 3":filteredOrders
-//        });
-//   } catch (error) {
-//     console.error("Error processing orders:", error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
 
 app.post("/processOrders", async (req: Request, res: Response) => {
   try {
@@ -296,11 +179,12 @@ const students = [
   { name: "Eve", age: 20, grade: 90 },
 ];
 
-// Usage
 console.log("Passed students:", filterPassedStudents(students));
 console.log("Student names:", getStudentNames(students));
 console.log("Students sorted by grade:", sortStudentsByGrade(students));
 console.log("Average age of students:", getAverageAge(students));
+
+
 
 //here i have made an post api endpoint to process the students array
 
