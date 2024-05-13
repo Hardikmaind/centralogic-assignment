@@ -26,7 +26,7 @@ app.get("/split/:param1/:param2", (req: Request, res: Response) => {
 });
 
 
-app.post("/split", (req, res) => {
+app.post("/split", (req:Request, res:Response) => {
   const { year } = req.body;
 
   if (typeof year !== "number" || isNaN(year)) {
