@@ -1,10 +1,17 @@
 import dotenv from "dotenv";
 import {Weather} from "../models/weather.model";
 import axios from "axios";
-import {WeatherData, WeatherResponse} from "../types/types";
+import {WeatherData, WeatherResponse,getapiresponse} from "../types/types";
+import sequelize from "sequelize/lib/sequelize";
 dotenv.config({
     path: "./.env",
 });
+
+
+
+
+
+
 async function fetchWeatherData(cities: WeatherData[]): Promise<WeatherResponse[]> {
 const weatherData: WeatherResponse[] = [];
 
@@ -51,4 +58,30 @@ for (const city of cities) {
 return weatherData;
 }
 
-export { fetchWeatherData };
+
+
+
+
+
+
+async function getWeatherData(city?: string): Promise<getapiresponse[]> {
+    if (city) {
+      return await Weather.findAll({
+        where: { city: city },
+        order: [['time', 'ASC']],
+      });
+    } else {
+      return await Weather.findAll({
+        order: [['time', 'ASC']],
+      });
+    }
+  }
+
+
+
+  
+
+
+
+
+export { fetchWeatherData,getWeatherData };

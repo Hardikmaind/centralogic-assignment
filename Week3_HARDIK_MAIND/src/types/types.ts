@@ -14,4 +14,14 @@ longitude: number;
 latitude: number;
 }
 
-export { WeatherData, WeatherResponse };
+interface getapiresponse {
+    id: number;
+    city: string;
+    country: string;
+    weather: string;
+    time: Date;
+  }
+
+  
+
+export { WeatherData, WeatherResponse,getapiresponse };

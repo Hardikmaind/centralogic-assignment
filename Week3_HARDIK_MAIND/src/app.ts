@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import axios from "axios";
 import { dot } from "node:test/reporters";
 import { WeatherData } from "./types/types";
-import { fetchWeatherData } from "./services/logic";
+import { fetchWeatherData,getWeatherData } from "./services/logic";
 dotenv.config({
     path: "./.env",
 });
@@ -21,59 +21,6 @@ app.get("/",(req:Request,res:Response)=>{
     res.send("this is testing server ...I am Hardik Maind");
 })
 
-// app.post("/api/SaveWeatherMapping", async (req: Request, res: Response) => {
-//     try {
-//       const cities = req.body;
-//       const weatherData = [];
-  
-//       for (const city of cities) {
-//         // Get the geographic coordinates
-//         const geoResponse = await axios.get('https://api.api-ninjas.com/v1/geocoding', {
-//           params: { city: city.city, country: city.country },
-//           headers: { 'X-Api-Key': process.env.GEO_API_KEY }
-//         });
-  
-//         const { latitude, longitude } = geoResponse.data[0];
-  
-//         // Get the weather information
-//         const weatherResponse = await axios.get('https://weatherapi-com.p.rapidapi.com/current.json', {
-//           params: { q: `${latitude},${longitude}` },
-//           headers: {
-//             'X-RapidAPI-Key': process.env.WEATHER_API_KEY,
-//             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
-//           }
-//         });
-  
-//         const weather = weatherResponse.data.current.condition.text;
-//         const time = new Date();
-  
-//         weatherData.push({
-//           city: city.city,
-//           country: city.country,
-//           weather,
-//           time,
-//           longitude,
-//           latitude
-//         });
-  
-//         // Save to database
-//         // await Weather.create({
-//         //   city: city.city,
-//         //   country: city.country,
-//         //   weather,
-//         //   time,
-//         //   Longitude: longitude,
-//         //   Latitude: latitude
-//         // });
-//       }
-  
-//       res.status(200).json(weatherData);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal server error');
-//     }
-//   });
-
 
 
 
@@ -89,6 +36,55 @@ app.post("/api/SaveWeatherMapping", async (req: Request, res: Response) => {
   });
 
 
+//   app.get('/api/weatherDashboard', async (req: Request, res: Response) => {
+//     try {
+//       const { city } = req.query;
+  
+//       let weatherData;
+//       if (city) {
+//         // If city parameter is provided, get all data related to that city
+//         weatherData = await Weather.findAll({
+//           where: { city: city as string },
+//           order: [['time', 'DESC']],
+//         });
+//       } else {
+//         // If no city parameter, get the latest weather condition for each city
+//         weatherData = await Weather.findAll({
+//           attributes: [
+//             'id',
+//             'city',
+//             'country',
+//             [sequelize.fn('MAX', sequelize.col('time')), 'time'],
+//             'weather',
+//           ],
+//           group: ['id', 'city', 'country', 'weather'],
+//           order: [[sequelize.fn('MAX', sequelize.col('time')), 'DESC']],
+//         });
+//       }
+  
+//       res.status(200).json(weatherData);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send('Internal server error');
+//     }
+//   });
+
+
+
+
+
+
+app.get('/api/weatherDashboard/:city?', async (req: Request, res: Response) => {
+    try {
+      const { city } = req.params;
+      const weatherData = await getWeatherData(city);
+      res.status(200).json(weatherData);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal server error');
+    }
+  });
+  
 
 
 app.listen(process.env.PORT,()=>{
