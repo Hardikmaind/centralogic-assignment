@@ -1,5 +1,4 @@
 
-
 interface WeatherData {
 city: string;
 country: string;
@@ -22,6 +21,14 @@ interface getapiresponse {
     date: Date;
   }
 
+  interface MailOptions {
+    from: string;
+    to: string;
+    subject: string;
+    text: string;
+    html?: string; // Make html property optional
 
+  }
+  
 
-export { WeatherData, WeatherResponse,getapiresponse };
+export { WeatherData, WeatherResponse,getapiresponse,MailOptions };
