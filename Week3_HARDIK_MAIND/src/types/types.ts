@@ -19,9 +19,9 @@ interface getapiresponse {
     city: string;
     country: string;
     weather: string;
-    time: Date;
+    date: Date;
   }
 
-  
+
 
 export { WeatherData, WeatherResponse,getapiresponse };

@@ -23,7 +23,6 @@ app.get("/",(req:Request,res:Response)=>{
 
 
 
-
 app.post("/api/SaveWeatherMapping", async (req: Request, res: Response) => {
     try {
       const cities: WeatherData[] = req.body;
@@ -34,43 +33,6 @@ app.post("/api/SaveWeatherMapping", async (req: Request, res: Response) => {
       res.status(500).send('Internal server error');
     }
   });
-
-
-//   app.get('/api/weatherDashboard', async (req: Request, res: Response) => {
-//     try {
-//       const { city } = req.query;
-  
-//       let weatherData;
-//       if (city) {
-//         // If city parameter is provided, get all data related to that city
-//         weatherData = await Weather.findAll({
-//           where: { city: city as string },
-//           order: [['time', 'DESC']],
-//         });
-//       } else {
-//         // If no city parameter, get the latest weather condition for each city
-//         weatherData = await Weather.findAll({
-//           attributes: [
-//             'id',
-//             'city',
-//             'country',
-//             [sequelize.fn('MAX', sequelize.col('time')), 'time'],
-//             'weather',
-//           ],
-//           group: ['id', 'city', 'country', 'weather'],
-//           order: [[sequelize.fn('MAX', sequelize.col('time')), 'DESC']],
-//         });
-//       }
-  
-//       res.status(200).json(weatherData);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).send('Internal server error');
-//     }
-//   });
-
-
-
 
 
 

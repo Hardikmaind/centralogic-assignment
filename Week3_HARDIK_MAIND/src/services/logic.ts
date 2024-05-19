@@ -63,21 +63,55 @@ return weatherData;
 
 
 
+// async function getWeatherData(city?: string): Promise<getapiresponse[]> {
+//     const attributesToExclude = ['Longitude', 'Latitude']; // Define attributes to exclude
+  
+//     if (city) {
+//       return await Weather.findAll({
+//         where: { city: city },
+//         order: [['time', 'ASC']],
+//         attributes: { exclude: attributesToExclude }, // Exclude specified attributes
+//       });
+//     } else {
+//       return await Weather.findAll({
+//         order: [['time', 'ASC']],
+//         attributes: { exclude: attributesToExclude }, // Exclude specified attributes
+//       });
+//     }
+//   }
+  
+
 
 async function getWeatherData(city?: string): Promise<getapiresponse[]> {
+    const attributesToExclude = ['Longitude', 'Latitude']; // Define attributes to exclude
+  
     if (city) {
-      return await Weather.findAll({
-        where: { city: city },
-        order: [['time', 'ASC']],
-      });
+        return  (await Weather.findAll({
+                where: { city: city },
+                order: [['time', 'ASC']],
+                attributes: { exclude: attributesToExclude }, // Exclude specified attributes
+        })).map((data:any) => ({
+            // ...data.dataValues,      //this can also be done instead of below code
+            id: data.id,
+            city: data.city,
+            country: data.country,
+            weather: data.weather,
+            date: data.time, // Rename the key to date
+        }));
     } else {
-      return await Weather.findAll({
-        order: [['time', 'ASC']],
-      });
+        return  (await Weather.findAll({
+                order: [['time', 'ASC']],
+                attributes: { exclude: attributesToExclude }, // Exclude specified attributes
+        })).map((data:any) => ({
+            id: data.id,
+            city: data.city,
+            country: data.country,
+            weather: data.weather,
+            date: data.time, // Rename the key to date
+        }));
     }
   }
-
-
+  
 
   
 
